@@ -1,0 +1,3 @@
+opencv-python-headless>=4.9
+numpy>=1.24
+# PySide6 is taken from the system (python-pyside6) or installed with: pip install PySide6

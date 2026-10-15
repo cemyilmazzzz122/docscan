@@ -1,0 +1,27 @@
+name: docscan
+description: "Document scanner: page detection, perspective correction, straightening and clean filters."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.5
+
+dependencies:
+  docscan_engine:
+    path: engine
+  file_picker: ^13.1.0
+  flutter:
+    sdk: flutter
+  gal: ^2.3.3
+  image_picker: ^1.2.4
+  path_provider: ^2.1.6
+  pdf: ^3.13.1
+  share_plus: ^13.3.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true

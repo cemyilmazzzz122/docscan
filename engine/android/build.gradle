@@ -1,0 +1,52 @@
+// Builds the C++ engine with the Android NDK through CMake.
+
+group = "dev.docscan.docscan_engine"
+version = "1.0"
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("com.android.tools.build:gradle:9.1.0")
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+apply plugin: "com.android.library"
+
+android {
+    namespace = "dev.docscan.docscan_engine"
+    compileSdk = 36
+    ndkVersion = android.ndkVersion
+
+    externalNativeBuild {
+        cmake {
+            path = "../src/CMakeLists.txt"
+        }
+    }
+
+    defaultConfig {
+        minSdk = 24
+        externalNativeBuild {
+            cmake {
+                // OpenCV's Android SDK is built against the shared C++ runtime
+                arguments "-DANDROID_STL=c++_shared"
+                cppFlags "-O3", "-fexceptions", "-frtti", "-ffunction-sections", "-fdata-sections"
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+}
