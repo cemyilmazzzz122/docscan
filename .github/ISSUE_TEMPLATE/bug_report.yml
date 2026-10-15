@@ -1,0 +1,51 @@
+name: Bug report
+description: The app crashes, a button does nothing, export fails, or something else is broken.
+labels: [bug]
+body:
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Android
+        - iOS
+        - Linux desktop
+        - Engine CLI
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: DocScan version
+      description: The release you installed (e.g. v1.0.0), or the commit if you built it yourself.
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device and OS version
+      placeholder: Pixel 8, Android 16 / iPhone 15, iOS 26.1 / Fedora 43, KDE Plasma 6.5
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open a photo from the gallery
+        2. Switch to Black & white
+        3. Export as PDF
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What happened, and what you expected
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Crash logs, terminal output or screenshots, if you have them.
+      render: text

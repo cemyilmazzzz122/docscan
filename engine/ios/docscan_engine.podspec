@@ -5,9 +5,9 @@ Pod::Spec.new do |s|
   s.version          = '1.0.0'
   s.summary          = 'Native C++ document scanning engine.'
   s.description      = 'Document detection, perspective correction, page straightening and filters, built on OpenCV.'
-  s.homepage         = 'https://github.com/'
-  s.license          = { :type => 'Proprietary' }
-  s.author           = { 'DocScan' => 'dev@docscan.dev' }
+  s.homepage         = 'https://github.com/cemyilmazzzz122/docscan'
+  s.license          = { :type => 'MIT', :file => '../../LICENSE' }
+  s.author           = { 'cemyilmazzzz122' => '248720897+cemyilmazzzz122@users.noreply.github.com' }
   s.source           = { :path => '.' }
   s.source_files     = 'Classes/**/*'
   s.public_header_files = 'Classes/docscan.h'

@@ -29,8 +29,25 @@ flutter build apk --release --split-per-abi  # smaller APK per CPU type
 
 The APKs land in `build/app/outputs/flutter-apk/`. Most phones need `app-arm64-v8a-release.apk`.
 
-Release builds are signed with the debug key so they install directly. To publish on a store, add
-your own signing config in `android/app/build.gradle.kts`.
+### Signing
+
+Release builds are signed with the release key when one is configured, and with the debug key
+otherwise (so forks and pull requests still build). The key is read from `android/key.properties`
+(ignored by git):
+
+```properties
+storeFile=/absolute/path/to/release.jks
+storePassword=...
+keyAlias=...
+keyPassword=...
+```
+
+or from the `ANDROID_KEYSTORE_PATH`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS` and
+`ANDROID_KEY_PASSWORD` environment variables. CI decodes the keystore from the
+`ANDROID_KEYSTORE_BASE64` secret and passes the rest from secrets of the same names.
+
+APKs signed with different keys cannot update each other, so keep the release keystore and its
+password backed up: losing it means users have to uninstall before installing a new version.
 
 ## iOS (native)
 
@@ -102,7 +119,7 @@ See [desktop.md](desktop.md).
 | Job | Runner | Output |
 | --- | --- | --- |
 | C++ engine | ubuntu-latest | builds the engine and CLI against the system OpenCV, runs a smoke test |
-| Android APK | ubuntu-latest | `android-apk` artifact: universal, arm64-v8a, armeabi-v7a and x86_64 APKs |
+| Android APK | ubuntu-latest | `android-apk` artifact: universal, arm64-v8a, armeabi-v7a and x86_64 APKs, signed with the release key |
 | iOS IPA | macos-26 | `ios-ipa` artifact: `DocScan-unsigned.ipa`, built from `ios-native/` with the latest stable Xcode |
 | Release | ubuntu-latest | on `v*` tags, a GitHub release with all APKs and the IPA |
 

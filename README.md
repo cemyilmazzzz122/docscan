@@ -89,3 +89,12 @@ docs/       documentation
 - [Native iOS app](docs/ios-native.md)
 - [Desktop app](docs/desktop.md)
 - [Building and CI](docs/building.md)
+
+## Contributing
+
+Issues and pull requests are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+DocScan is released under the [MIT License](LICENSE). It uses [OpenCV](https://opencv.org), which is
+licensed under Apache-2.0.

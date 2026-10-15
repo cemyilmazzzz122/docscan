@@ -1,0 +1,53 @@
+name: Bad scan
+description: The page was found in the wrong place, came out skewed or curved, or the filter looks wrong.
+labels: [scan-quality]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The original photo is what makes a bad scan fixable: the engine gives the same result for the
+        same photo. **Only attach photos you are happy to make public**; cover or crop out anything
+        private.
+  - type: dropdown
+    id: problem
+    attributes:
+      label: What went wrong
+      multiple: true
+      options:
+        - Page not found, or wrong corners
+        - Perspective or proportions wrong
+        - Curved or folded page not straightened
+        - Shadows or uneven light left in
+        - Color, Gray or Black & white mode looks wrong
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Android
+        - iOS
+        - Linux desktop
+        - Engine CLI
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: DocScan version
+    validations:
+      required: true
+  - type: textarea
+    id: images
+    attributes:
+      label: Original photo and result
+      description: Drag the original photo and the scan DocScan produced into this box.
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else
+      description: The paper (size, glossy, thin, folded), the lighting, or what you expected instead.
