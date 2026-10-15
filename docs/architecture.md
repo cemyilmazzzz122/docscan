@@ -7,6 +7,7 @@ that share one image processing design:
 | --- | --- | --- | --- |
 | Engine | `engine/src` | C++17, OpenCV | Android, iOS, Linux (CLI) |
 | Mobile app | `lib/`, `android/`, `ios/` | Dart, Flutter | Android, iOS |
+| Native iOS app | `ios-native/` | Swift, SwiftUI | iOS 26+ |
 | Desktop app | `desktop/` | Python, PySide6, OpenCV | Linux (KDE Plasma) |
 
 ## Repository layout

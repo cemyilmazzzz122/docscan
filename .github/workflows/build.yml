@@ -81,28 +81,32 @@ jobs:
           path: dist/*.apk
 
   ios:
-    name: iOS IPA (unsigned)
-    runs-on: macos-latest
+    name: iOS IPA (native SwiftUI, unsigned)
+    runs-on: macos-26
     steps:
       - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
+      - uses: maxim-lobanov/setup-xcode@v1
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: stable
-          cache: true
+          xcode-version: latest-stable
       - name: Cache OpenCV
         uses: actions/cache@v4
         with:
           path: engine/ios/opencv2.framework
           key: opencv-ios-${{ env.OPENCV_VERSION }}
       - run: scripts/fetch_opencv.sh ios
-      - run: flutter pub get
+      - name: Generate Xcode project
+        run: |
+          brew install xcodegen
+          xcodegen generate --spec ios-native/project.yml
       - name: Build
-        run: flutter build ios --release --no-codesign
+        run: |
+          xcodebuild -project ios-native/DocScan.xcodeproj -scheme DocScan -configuration Release \
+            -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build/ios-native \
+            CODE_SIGNING_ALLOWED=NO build
       - name: Package IPA
         run: |
           mkdir -p dist/Payload
-          cp -R build/ios/iphoneos/Runner.app dist/Payload/
+          cp -R build/ios-native/Build/Products/Release-iphoneos/DocScan.app dist/Payload/
           cd dist && zip -qr DocScan-unsigned.ipa Payload && rm -rf Payload
       - uses: actions/upload-artifact@v4
         with:

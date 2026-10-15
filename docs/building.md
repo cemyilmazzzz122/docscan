@@ -5,7 +5,8 @@
 | Target | Needs |
 | --- | --- |
 | Android APK | Flutter 3.47+, JDK 17 or 21, Android SDK (the NDK and CMake are installed by Gradle) |
-| iOS app | macOS, Xcode 16+, CocoaPods, Flutter 3.47+ |
+| iOS app (native) | macOS, Xcode 26+, XcodeGen |
+| iOS app (Flutter) | macOS, Xcode 16+, CocoaPods, Flutter 3.47+ |
 | Engine CLI | CMake 3.10+, a C++17 compiler, OpenCV 4.9+ or 5.x development files |
 | Desktop app | Python 3.10+, PySide6, OpenCV for Python |
 
@@ -31,7 +32,26 @@ The APKs land in `build/app/outputs/flutter-apk/`. Most phones need `app-arm64-v
 Release builds are signed with the debug key so they install directly. To publish on a store, add
 your own signing config in `android/app/build.gradle.kts`.
 
-## iOS
+## iOS (native)
+
+The IPA that CI publishes is the SwiftUI app in `ios-native/`. Its Xcode project is generated from
+`ios-native/project.yml` and is not checked in.
+
+```sh
+scripts/fetch_opencv.sh ios
+brew install xcodegen
+xcodegen generate --spec ios-native/project.yml
+open ios-native/DocScan.xcodeproj       # pick a team under Signing & Capabilities, then run
+
+# unsigned device build, as CI does it
+xcodebuild -project ios-native/DocScan.xcodeproj -scheme DocScan -configuration Release \
+  -sdk iphoneos -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build
+```
+
+It needs iOS 26 or later. The prebuilt OpenCV framework has no arm64 simulator slice, so on Apple
+silicon Macs test on a device (the iOS 26 simulator no longer runs x86_64 apps).
+
+## iOS (Flutter)
 
 ```sh
 scripts/fetch_opencv.sh ios
@@ -83,7 +103,7 @@ See [desktop.md](desktop.md).
 | --- | --- | --- |
 | C++ engine | ubuntu-latest | builds the engine and CLI against the system OpenCV, runs a smoke test |
 | Android APK | ubuntu-latest | `android-apk` artifact: universal, arm64-v8a, armeabi-v7a and x86_64 APKs |
-| iOS IPA | macos-latest | `ios-ipa` artifact: `DocScan-unsigned.ipa` |
+| iOS IPA | macos-26 | `ios-ipa` artifact: `DocScan-unsigned.ipa`, built from `ios-native/` with the latest stable Xcode |
 | Release | ubuntu-latest | on `v*` tags, a GitHub release with all APKs and the IPA |
 
 To publish a release:

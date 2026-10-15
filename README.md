@@ -3,7 +3,8 @@
 DocScan turns a photo of a document into a flat, clean scan. It finds the page, corrects the
 perspective, straightens bent pages, removes shadows and uneven light, and exports images or PDFs.
 
-It runs on Android and iOS (Flutter app on a C++ engine) and on Linux (Qt desktop app).
+It runs on Android (Flutter app on a C++ engine), iOS (native SwiftUI app with Liquid Glass on the
+same engine) and Linux (Qt desktop app).
 
 ## Features
 
@@ -40,7 +41,14 @@ Download the latest APK or IPA from the releases page, or build it yourself:
 scripts/fetch_opencv.sh        # prebuilt OpenCV for Android and iOS
 flutter pub get
 flutter build apk --release    # Android
-flutter build ios --release    # iOS, on macOS
+```
+
+Native iOS app (macOS, Xcode 26+, [XcodeGen](https://github.com/yonaskolb/XcodeGen)):
+
+```sh
+scripts/fetch_opencv.sh ios
+xcodegen generate --spec ios-native/project.yml
+open ios-native/DocScan.xcodeproj
 ```
 
 Linux desktop app:
@@ -65,7 +73,8 @@ See [docs/building.md](docs/building.md) for requirements and options.
 engine/     C++ engine (OpenCV) with a C API, packaged as a Flutter FFI plugin
 lib/        Flutter app
 android/    Android host project
-ios/        iOS host project
+ios/        Flutter iOS host project (the released IPA is ios-native)
+ios-native/ native iOS app (SwiftUI, iOS 26+, Liquid Glass)
 desktop/    Linux desktop app (Python, PySide6)
 scripts/    helper scripts
 docs/       documentation
@@ -77,5 +86,6 @@ docs/       documentation
 - [Engine algorithms](docs/engine.md)
 - [C API](docs/c-api.md)
 - [Mobile app](docs/mobile-app.md)
+- [Native iOS app](docs/ios-native.md)
 - [Desktop app](docs/desktop.md)
 - [Building and CI](docs/building.md)
